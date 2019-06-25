@@ -14,6 +14,10 @@ static inline int32_t queue_align_size(int32_t size) {
 	return (size % CACHE_LINE_SIZE) ? size + (CACHE_LINE_SIZE - (size % CACHE_LINE_SIZE)) : size;
 }
 
+static void cleanup_mutex(void *arg) {
+	pthread_mutex_unlock((pthread_mutex_t*)arg);
+}
+
 int32_t queue_init(TSQueue_t *queue) {
 
 	pthread_mutex_init(&queue->mutex, NULL);
@@ -93,8 +97,8 @@ int32_t queue_push_item(TSQueue_t *queue, void *data, int32_t size) {
 
 		node->data = malloc(queue_align_size(size));
 		if (node->data == NULL) {
-			fprintf(stdout, "%s() node data malloc failed!", __func__);
 			free(node);
+			fprintf(stdout, "%s() node data malloc failed!", __func__);		
 			return -1;
 		}
 
@@ -107,8 +111,8 @@ int32_t queue_push_item(TSQueue_t *queue, void *data, int32_t size) {
 		node->size = 0;
 	}
 
-
 	pthread_mutex_lock(&queue->mutex);
+	pthread_cleanup_push(cleanup_mutex, (void*)&queue->mutex);
 
 	if (queue->tail == NULL) {
 
@@ -123,7 +127,7 @@ int32_t queue_push_item(TSQueue_t *queue, void *data, int32_t size) {
 	queue->lenght++;
 
 	pthread_cond_signal(&queue->cond);
-	pthread_mutex_unlock(&queue->mutex);
+	pthread_cleanup_pop(1);
 
 	return 0;
 }
@@ -133,6 +137,7 @@ TSNode_t *queue_pop_item(TSQueue_t *queue) {
 	TSNode_t *node;
 
 	pthread_mutex_lock(&queue->mutex);
+	pthread_cleanup_push(cleanup_mutex, (void*)&queue->mutex);
 
 	for (;;) {
 
@@ -158,7 +163,7 @@ TSNode_t *queue_pop_item(TSQueue_t *queue) {
 		}
 	}
 
-	pthread_mutex_unlock(&queue->mutex);
+	pthread_cleanup_pop(1);
 
 	return node;
 }
