@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.c" />
+    <ClCompile Include="ts_queue.c">
+      <Filter>ts_queue</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="ts_queue">
+      <UniqueIdentifier>{5c72f3d9-8665-4798-b08e-06be0e276b9c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ts_queue.h">
+      <Filter>ts_queue</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -76,6 +76,10 @@
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
     <ClCompile Include="main.c" />
+    <ClCompile Include="ts_queue.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ts_queue.h" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
