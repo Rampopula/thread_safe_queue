@@ -27,6 +27,8 @@ int32_t queue_init(TSQueue_t *queue) {
 	queue->lenght = 0;
 	queue->inited = 1;
 
+	pthread_mutex_unlock(&queue->mutex);
+
 	return 0;
 }
 
@@ -89,9 +91,7 @@ int32_t queue_push_item(TSQueue_t *queue, void *data, int32_t size) {
 
 	if (size > 0) {
 
-		size = queue_align_size(size);
-		node->data = malloc(size);
-
+		node->data = malloc(queue_align_size(size));
 		if (node->data == NULL) {
 			fprintf(stdout, "%s() node data malloc failed!", __func__);
 			free(node);
