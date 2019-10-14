@@ -17,7 +17,7 @@
 #include <string.h>
 #include <unistd.h>
 
-#define CACHE_LINE_SIZE		(64)
+#define ALIGNMENT_SIZE		(64)
 
 typedef struct TSNode {
 	int32_t size;

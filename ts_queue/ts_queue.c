@@ -11,7 +11,7 @@
 
 static inline int32_t queue_align_size(int32_t size) {
 
-	return (size % CACHE_LINE_SIZE) ? size + (CACHE_LINE_SIZE - (size % CACHE_LINE_SIZE)) : size;
+	return (size % ALIGNMENT_SIZE) ? size + (ALIGNMENT_SIZE - (size % ALIGNMENT_SIZE)) : size;
 }
 
 static void cleanup_mutex(void *arg) {
